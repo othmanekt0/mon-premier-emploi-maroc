@@ -1,0 +1,125 @@
+{
+  "langue": "fr",
+  "sources": {
+    "code": {
+      "titre": "Loi n° 65-99 relative au Code du travail",
+      "url": "https://adala.justice.gov.ma/api/uploads/2024/04/30/code%20du%20travail-1714463246806.pdf",
+      "date_promulgation": "2003-09-11"
+    },
+    "decret": {
+      "titre": "Décret n° 2-04-469 relatif au délai de préavis pour la rupture unilatérale du CDI",
+      "url": "https://www.sgg.gov.ma/BO/bo_fr/2005/BO_5280_Fr.pdf#page=23",
+      "date_texte": "2004-12-29",
+      "date_publication": "2005-01-06",
+      "bulletin": "5280",
+      "page_imprimee": 23
+    }
+  },
+  "entrees": [
+    {
+      "theme": "essai",
+      "source": "code",
+      "article": "13",
+      "titre": "Rupture pendant l’essai et délai après une semaine de travail",
+      "resume": "Distinguer le principe de rupture pendant l’essai et les conditions de délai prévues par l’article. Vérifier le temps travaillé, la fréquence de paie et le motif."
+    },
+    {
+      "theme": "essai",
+      "source": "code",
+      "article": "14",
+      "titre": "Durée et renouvellement",
+      "resume": "Distinguer CDD et CDI. En CDI, la catégorie professionnelle compte. En CDD, vérifier la durée totale du contrat. Le texte prévoit aussi la possibilité de durées plus courtes."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "231",
+      "titre": "Ouverture du droit et durée de base",
+      "resume": "Vérifier la continuité du service, l’âge et l’existence de dispositions plus favorables."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "232",
+      "titre": "Majoration liée à l’ancienneté",
+      "resume": "Vérifier les périodes de cinq années de service et le plafond légal."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "235",
+      "titre": "Jours fériés et interruption pour maladie",
+      "resume": "Examiner les jours fériés et les interruptions dues à la maladie pendant la période du congé."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "236",
+      "titre": "Définition des jours de travail effectif",
+      "resume": "Distinguer le décompte des jours de travail effectif des jours de repos et de fête concernés par le texte."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "237",
+      "titre": "Continuité du service",
+      "resume": "Vérifier les périodes où le salarié reste lié à l’employeur et les suspensions visées par le renvoi à l’article 32."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "238",
+      "titre": "Conversion du temps de travail en mois",
+      "resume": "Distinguer le décompte en jours et en heures ainsi que les activités agricoles et non agricoles."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "240",
+      "titre": "Fractionnement et cumul",
+      "resume": "Vérifier l’accord des parties et les limites prévues par l’article."
+    },
+    {
+      "theme": "conges",
+      "source": "code",
+      "article": "243",
+      "titre": "Congés et préavis",
+      "resume": "Traiter la durée des congés payés et celle du préavis comme deux notions distinctes."
+    },
+    {
+      "theme": "preavis",
+      "source": "code",
+      "article": "34",
+      "titre": "Démission du salarié en CDI",
+      "resume": "Identifier les formalités mentionnées pour la démission et le renvoi aux dispositions relatives au préavis."
+    },
+    {
+      "theme": "preavis",
+      "source": "code",
+      "article": "43",
+      "titre": "Obligation de préavis et sources applicables",
+      "resume": "Vérifier la nature du contrat, les exceptions et l’articulation entre textes et dispositions contractuelles ou collectives."
+    },
+    {
+      "theme": "preavis",
+      "source": "code",
+      "article": "44",
+      "titre": "Point de départ",
+      "resume": "Vérifier la date de notification de la décision de mettre fin au contrat."
+    },
+    {
+      "theme": "preavis",
+      "source": "code",
+      "article": "51",
+      "titre": "Préavis non intégralement respecté",
+      "resume": "Identifier la question de l’indemnité de préavis et les conditions indiquées dans le texte."
+    },
+    {
+      "theme": "preavis",
+      "source": "decret",
+      "article": "1",
+      "titre": "Barème de préavis en CDI",
+      "resume": "Identifier la catégorie professionnelle et l’ancienneté pour retrouver la ligne du barème applicable."
+    }
+  ]
+}
