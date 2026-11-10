@@ -3,13 +3,14 @@
 import argparse
 import json
 import math
+import os
 import re
 import unicodedata
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PASSAGES = ROOT / "data/index/passages.json"
+PASSAGES = Path(os.environ.get("EMPLOI_PASSAGES") or ROOT / "data/index/passages.json").resolve()
 CAS = ROOT / "tests/cas_reference.json"
 MOTS_VIDES = set(
     "ai au aux avec ce ces dans de des du elle en est et il je l la le les "

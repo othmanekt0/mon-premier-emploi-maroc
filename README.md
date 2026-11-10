@@ -83,3 +83,7 @@ Après avoir préparé le corpus :
 ## Vérification sur GitHub
 
 À chaque push et pull request, le [workflow Tests](../../actions/workflows/tests.yml) utilise Python 3.11, télécharge le PDF officiel référencé dans le catalogue, génère les passages et exécute les tests. Le bilan de recherche est visible dans le journal du workflow.
+
+## Livrable installable
+
+Le [guide du livrable](docs/livrable.md) explique comment construire la roue et l’archive source, puis installer et lancer l’application hors du dépôt.

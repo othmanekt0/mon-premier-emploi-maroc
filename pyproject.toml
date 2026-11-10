@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mon-premier-emploi-maroc"
+version = "1.0.0"
+description = "Assistant documentaire sur le droit du travail marocain"
+readme = "README.md"
+requires-python = ">=3.11"
+dynamic = ["dependencies", "optional-dependencies"]
+
+[project.scripts]
+emploi-preparer = "src.preparer_passages:main"
+emploi-ui = "src.lancement:interface"
+
+[tool.setuptools]
+packages = ["api", "src", "ui", "data"]
+include-package-data = false
+
+[tool.setuptools.package-data]
+data = ["corpus.json", "bareme_preavis.json"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.dynamic.optional-dependencies]
+semantique = {file = ["requirements-semantiques.txt"]}
