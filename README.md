@@ -17,33 +17,61 @@ Le cadrage est disponible dans la [fiche projet](docs/cadrage.md). Le corpus, la
 | `tests/` | Évaluation de la recherche et des réponses, puis tests d’intégration. |
 | `docs/` | Cadrage et journal du projet. |
 
-## API locale
+## Tester le projet sous Windows
 
-Préparer le corpus selon le [guide du corpus](docs/corpus.md), puis lancer :
-
-```powershell
-python -m uvicorn api.main:app --reload
-```
-
-La documentation interactive est disponible sur http://127.0.0.1:8000/docs.
-La route `GET /health` vérifie le chargement du corpus. La route `POST /question`
-accepte un objet JSON comme `{"question": "Je démissionne de mon CDI. Quel est mon préavis ?"}`.
-Elle renvoie le statut, le message et les sources. Les questions vides ou de plus
-de 2 000 caractères sont rejetées avec un statut HTTP 422.
-
-Pour lancer les tests après préparation du corpus :
+Ouvrir PowerShell à la racine du projet. Utiliser Python 3.11 ou 3.12 pour créer l’environnement du projet.
 
 ```powershell
-python -m pip install -r requirements-dev.txt
-python -m unittest discover -s tests -v
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-## Interface Streamlit
-
-Laisser l’API tourner dans un premier terminal. Depuis la racine du dépôt, dans un deuxième terminal avec le même environnement Python, lancer :
+L’API a besoin de `data/index/passages.json`. Si ce fichier manque, télécharger le [PDF officiel du Code du travail](https://adala.justice.gov.ma/api/uploads/2024/04/30/code%20du%20travail-1714463246806.pdf) et indiquer son chemin réel à la commande suivante :
 
 ```powershell
-python -m streamlit run ui/app.py
+.\.venv\Scripts\python.exe src/preparer_passages.py --code "C:\chemin\vers\code-du-travail.pdf"
 ```
 
-Ouvrir http://localhost:8501. L’interface contacte l’API sur http://127.0.0.1:8000 par défaut. Si l’API tourne ailleurs, définir la variable `API_URL` avant de lancer Streamlit.
+### Terminal 1 — Lancer et essayer l’API
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+```
+
+Laisser ce terminal ouvert. Attendre le message `Application startup complete`, puis ouvrir [la vérification de santé](http://127.0.0.1:8000/health). Elle doit afficher `{"status":"OK","passages":15}`. Ces adresses sont locales à ta machine et deviennent accessibles lorsque l’API tourne.
+
+Dans [la documentation interactive](http://127.0.0.1:8000/docs), ouvrir `POST /question`, cliquer sur **Try it out**, coller le JSON ci-dessous, puis cliquer sur **Execute**.
+
+```json
+{"question": "Quelle est la durée d’essai prévue pour un cadre en CDI ?"}
+```
+
+Résultat attendu : HTTP 200, statut `repondre` et source `code:14`. Avec `{"question": ""}`, le résultat attendu est HTTP 422.
+
+### Terminal 2 — Lancer et essayer l’interface
+
+Ouvrir un deuxième PowerShell à la racine du projet, en laissant l’API tourner.
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run ui/app.py
+```
+
+Ouvrir [l’interface locale](http://localhost:8501), puis essayer ces questions.
+
+| Question | Résultat attendu |
+| --- | --- |
+| Quelle est la durée d’essai prévue pour un cadre en CDI ? | Réponse avec l’article 14 et un lien vers la source officielle. |
+| Je démissionne de mon CDI. Combien de temps dure mon préavis ? | L’interface demande la catégorie professionnelle et l’ancienneté. |
+| Quel barème de préavis s’applique à un cadre en CDI avec deux ans d’ancienneté ? | Réponse avec le barème, l’article 43 et le décret. |
+| Combien de jours de congé de maternité puis-je prendre ? | Question hors périmètre. |
+
+Si le port 8000 est déjà occupé, démarrer Uvicorn avec `--port 8001`, ouvrir `http://127.0.0.1:8001/docs` et exécuter `$env:API_URL = "http://127.0.0.1:8001"` dans le deuxième terminal avant de lancer Streamlit.
+
+## Tests automatisés
+
+Après avoir préparé le corpus :
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
