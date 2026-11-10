@@ -1,0 +1,18 @@
+{
+  "texte": "Barème du délai de préavis pour la rupture unilatérale d’un CDI. Représentation structurée de l’article premier du décret n° 2-04-469, à lire avec l’article 43 du Code du travail.",
+  "page_pdf": 23,
+  "bareme": [
+    {
+      "categorie": "Cadres et assimilés",
+      "moins_un_an": "1 mois",
+      "un_a_cinq_ans": "2 mois",
+      "plus_de_cinq_ans": "3 mois"
+    },
+    {
+      "categorie": "Employés et ouvriers",
+      "moins_un_an": "8 jours",
+      "un_a_cinq_ans": "1 mois",
+      "plus_de_cinq_ans": "2 mois"
+    }
+  ]
+}

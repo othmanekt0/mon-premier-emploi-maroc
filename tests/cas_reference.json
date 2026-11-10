@@ -1,0 +1,270 @@
+[
+  {
+    "id": "essai-01",
+    "theme": "essai",
+    "question": "Quelle est la durée d’essai prévue pour un cadre en CDI ?",
+    "references": [
+      "code:14"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "essai-02",
+    "theme": "essai",
+    "question": "Je suis employé en CDI. L’essai peut-il être renouvelé deux fois ?",
+    "references": [
+      "code:14"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "essai-03",
+    "theme": "essai",
+    "question": "Quelle durée maximale le texte prévoit-il pour un CDD de quatre mois ?",
+    "references": [
+      "code:14"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "essai-04",
+    "theme": "essai",
+    "question": "Quelle durée maximale le texte prévoit-il pour un CDD de huit mois ?",
+    "references": [
+      "code:14"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "essai-05",
+    "theme": "essai",
+    "question": "L’employeur met fin à mon essai après deux semaines. Je suis payé au mois et il n’invoque aucune faute grave. Quel article traite du délai ?",
+    "references": [
+      "code:13"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "essai-06",
+    "theme": "essai",
+    "question": "Le contrat peut-il prévoir une période d’essai plus courte ?",
+    "references": [
+      "code:14"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "essai-07",
+    "theme": "essai",
+    "question": "Mon contrat prévoit trois mois d’essai. Quelle règle s’applique ?",
+    "references": [
+      "code:14"
+    ],
+    "comportement": "clarifier",
+    "precision": "Demander le type de contrat et, selon le cas, la catégorie professionnelle ou la durée du CDD."
+  },
+  {
+    "id": "essai-08",
+    "theme": "essai",
+    "question": "On a mis fin à mon essai. Dois-je avoir été prévenu ?",
+    "references": [
+      "code:13"
+    ],
+    "comportement": "clarifier",
+    "precision": "Demander notamment la durée déjà travaillée et la fréquence de paie."
+  },
+  {
+    "id": "essai-09",
+    "theme": "essai",
+    "question": "Comment contester un licenciement économique plusieurs mois après la fin de mon essai ?",
+    "references": [],
+    "comportement": "hors_perimetre"
+  },
+  {
+    "id": "essai-10",
+    "theme": "essai",
+    "question": "Puis-je faire reconnaître une maladie professionnelle pendant mon essai ?",
+    "references": [],
+    "comportement": "hors_perimetre"
+  },
+  {
+    "id": "conges-01",
+    "theme": "conges",
+    "question": "Quelle est la durée de base du congé annuel payé pour un salarié majeur ayant six mois de service continu ?",
+    "references": [
+      "code:231"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "conges-02",
+    "theme": "conges",
+    "question": "Le calcul de base des congés est-il différent pour un salarié de 17 ans ?",
+    "references": [
+      "code:231"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "conges-03",
+    "theme": "conges",
+    "question": "Quelle majoration des congés le Code prévoit-il pour cinq années de service ?",
+    "references": [
+      "code:232"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "conges-04",
+    "theme": "conges",
+    "question": "Je tombe malade pendant mes congés annuels. Quel article traite du décompte ?",
+    "references": [
+      "code:235"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "conges-05",
+    "theme": "conges",
+    "question": "Le jour de repos hebdomadaire compte-t-il comme jour de travail effectif pour le congé annuel ?",
+    "references": [
+      "code:236"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "conges-06",
+    "theme": "conges",
+    "question": "Peut-on fractionner ou cumuler les congés annuels avec l’accord de l’employeur ?",
+    "references": [
+      "code:240"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "conges-07",
+    "theme": "conges",
+    "question": "Comment convertir des heures de travail en mois pour calculer les congés ?",
+    "references": [
+      "code:238"
+    ],
+    "comportement": "clarifier",
+    "precision": "Demander si l’activité est agricole ou non agricole avant de choisir le seuil applicable."
+  },
+  {
+    "id": "conges-08",
+    "theme": "conges",
+    "question": "À combien de jours de congé annuel ai-je droit ?",
+    "references": [
+      "code:231"
+    ],
+    "comportement": "clarifier",
+    "precision": "Demander l’âge et la durée du service continu, puis signaler la possibilité de dispositions plus favorables."
+  },
+  {
+    "id": "conges-09",
+    "theme": "conges",
+    "question": "Combien de jours de congé de maternité puis-je prendre ?",
+    "references": [],
+    "comportement": "hors_perimetre"
+  },
+  {
+    "id": "conges-10",
+    "theme": "conges",
+    "question": "Mon employeur doit-il rémunérer mes heures supplémentaires du dimanche ?",
+    "references": [],
+    "comportement": "hors_perimetre"
+  },
+  {
+    "id": "preavis-01",
+    "theme": "preavis",
+    "question": "Quelle formalité le Code prévoit-il pour la signature d’une démission en CDI ?",
+    "references": [
+      "code:34"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "preavis-02",
+    "theme": "preavis",
+    "question": "Quel barème s’applique à un cadre en CDI avec deux ans d’ancienneté qui démissionne, en l’absence d’exception ou de clause différente ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "preavis-03",
+    "theme": "preavis",
+    "question": "Quel barème s’applique à un employé en CDI avec huit mois d’ancienneté qui démissionne, en l’absence d’exception ou de clause différente ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "preavis-04",
+    "theme": "preavis",
+    "question": "À partir de quand le préavis court-il après la notification de la démission ?",
+    "references": [
+      "code:44"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "preavis-05",
+    "theme": "preavis",
+    "question": "Quel article traite de l’indemnité quand un préavis dû en CDI n’a pas été intégralement respecté ?",
+    "references": [
+      "code:51"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "preavis-06",
+    "theme": "preavis",
+    "question": "Mes congés annuels et mon préavis se confondent-ils selon le Code ?",
+    "references": [
+      "code:243"
+    ],
+    "comportement": "repondre"
+  },
+  {
+    "id": "preavis-07",
+    "theme": "preavis",
+    "question": "Je démissionne de mon CDI. Combien de temps dure mon préavis ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "comportement": "clarifier",
+    "precision": "Demander la catégorie professionnelle et l’ancienneté, puis signaler les dispositions applicables à vérifier."
+  },
+  {
+    "id": "preavis-08",
+    "theme": "preavis",
+    "question": "Je veux quitter mon travail. Quel préavis dois-je faire ?",
+    "references": [
+      "code:34",
+      "code:43"
+    ],
+    "comportement": "clarifier",
+    "precision": "Demander le type de contrat et si la personne est encore en période d’essai avant d’appliquer les règles de démission en CDI."
+  },
+  {
+    "id": "preavis-09",
+    "theme": "preavis",
+    "question": "Quel est mon droit à une indemnité de licenciement ?",
+    "references": [],
+    "comportement": "hors_perimetre"
+  },
+  {
+    "id": "preavis-10",
+    "theme": "preavis",
+    "question": "Comment contester le non-renouvellement de mon CDD ?",
+    "references": [],
+    "comportement": "hors_perimetre"
+  }
+]

@@ -13,3 +13,16 @@ La première sélection couvre les questions de période d’essai, de congés a
 - [Catalogue des articles et de leurs sources](../data/corpus.json)
 
 Le catalogue contient des résumés de repérage. Les articles originaux restent consultables aux liens officiels. L’étape d’indexation devra conserver la référence de chaque passage et distinguer le texte officiel du résumé. Les dates indiquées identifient les textes et leur publication. Avant la mise en service, vérifier les versions et les dispositions complémentaires nécessaires aux cas retenus.
+
+## Préparer les passages et les cas de référence
+
+Télécharger le PDF du Code du travail depuis le lien Adala ci-dessus. Depuis la racine du dépôt, exécuter :
+
+```powershell
+python -m pip install -r requirements.txt
+python src/preparer_passages.py --code "<chemin vers le PDF Adala>"
+```
+
+Le fichier généré `data/index/passages.json` contient les articles du Code extraits et les références vers leurs pages. Le Bulletin officiel est scanné. Son barème est enregistré séparément sous forme structurée et identifié comme tel dans la sortie. Pour citer sa formulation exacte, consulter la page officielle.
+
+Les [30 cas de référence](../tests/cas_reference.json) indiquent les références attendues et le comportement attendu. Chaque thème comprend six questions auxquelles répondre, deux qui nécessitent une clarification et deux hors périmètre. Les références utilisent le format `source:article`. Ce jeu servira à évaluer le moteur quand il sera disponible.
