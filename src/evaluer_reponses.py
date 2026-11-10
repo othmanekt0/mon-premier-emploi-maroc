@@ -39,10 +39,18 @@ def evaluer(assistant, cas):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--passages", type=Path, default=PASSAGES)
+    parser.add_argument("--ollama", metavar="MODELE")
     args = parser.parse_args()
     if not args.passages.is_file():
         parser.error("Passages introuvables. Lancez d’abord src/preparer_passages.py.")
-    evaluer(Assistant(charger(args.passages)), charger(CAS))
+    passages = charger(args.passages)
+    if args.ollama:
+        from src.generation import AssistantGeneratif
+
+        assistant = AssistantGeneratif(passages, args.ollama)
+    else:
+        assistant = Assistant(passages)
+    evaluer(assistant, charger(CAS))
 
 
 if __name__ == "__main__":

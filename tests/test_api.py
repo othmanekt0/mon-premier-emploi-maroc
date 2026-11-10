@@ -1,6 +1,8 @@
+import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
@@ -11,6 +13,7 @@ from src.recherche import CAS, PASSAGES, charger
 class TestApi(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.enterClassContext(patch.dict(os.environ, {"OLLAMA_MODEL": ""}))
         cls.client = cls.enterClassContext(TestClient(app))
 
     def test_sante(self):

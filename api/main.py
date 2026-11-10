@@ -1,12 +1,14 @@
 """API HTTP de l’assistant documentaire."""
 
 from contextlib import asynccontextmanager
+import os
 from pathlib import Path
 from typing import Annotated, Literal
 
 from fastapi import FastAPI, Request
 from pydantic import BaseModel, StringConstraints
 
+from src.generation import AssistantGeneratif
 from src.recherche import PASSAGES, charger
 from src.reponse import Assistant
 
@@ -41,7 +43,10 @@ def creer_app(chemin_passages: Path = PASSAGES) -> FastAPI:
                 "Lancez d’abord src/preparer_passages.py."
             )
         passages = charger(chemin_passages)
-        app.state.assistant = Assistant(passages)
+        modele = os.environ.get("OLLAMA_MODEL", "").strip()
+        app.state.assistant = (
+            AssistantGeneratif(passages, modele) if modele else Assistant(passages)
+        )
         app.state.nombre_passages = len(passages)
         yield
 

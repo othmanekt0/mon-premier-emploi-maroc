@@ -63,7 +63,7 @@ if envoyer:
         try:
             with st.spinner("Recherche des sources…"):
                 retour = httpx.post(
-                    f"{API_URL}/question", json={"question": question.strip()}, timeout=10
+                    f"{API_URL}/question", json={"question": question.strip()}, timeout=130
                 )
                 retour.raise_for_status()
                 reponse = retour.json()

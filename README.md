@@ -67,6 +67,10 @@ Ouvrir [l’interface locale](http://localhost:8501), puis essayer ces questions
 
 Si le port 8000 est déjà occupé, démarrer Uvicorn avec `--port 8001`, ouvrir `http://127.0.0.1:8001/docs` et exécuter `$env:API_URL = "http://127.0.0.1:8001"` dans le deuxième terminal avant de lancer Streamlit.
 
+## Mode génératif local
+
+Le [guide Ollama](docs/reponse.md#mode-génératif-local) explique comment activer et évaluer la génération avec citations vérifiées.
+
 ## Tests automatisés
 
 Après avoir préparé le corpus :
