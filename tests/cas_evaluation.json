@@ -1,0 +1,148 @@
+[
+  {
+    "id": "essai-1",
+    "theme": "essai",
+    "question": "Je viens d’être embauché comme cadre en CDI. Combien de temps dure mon essai ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "repondre",
+    "critere": "Donne trois mois comme durée initiale et signale la possibilité d’une durée plus courte."
+  },
+  {
+    "id": "essai-2",
+    "theme": "essai",
+    "question": "En CDI, je suis ouvrière. Quelle est la durée de la période probatoire ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "repondre",
+    "critere": "Reconnaît la période d’essai et donne quinze jours comme durée initiale."
+  },
+  {
+    "id": "essai-3",
+    "theme": "essai",
+    "question": "Mon employeur souhaite prolonger une deuxième fois l’essai de mon CDI. Est-ce prévu ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "repondre",
+    "critere": "Explique que l’article prévoit un seul renouvellement."
+  },
+  {
+    "id": "essai-4",
+    "theme": "essai",
+    "question": "Ma période d’essai est de trois mois. Est-ce normal ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "clarifier",
+    "critere": "Demande le type de contrat et la catégorie professionnelle ou la durée du CDD selon le cas."
+  },
+  {
+    "id": "essai-5",
+    "theme": "essai",
+    "question": "Mon employeur me demande de travailler le dimanche. Est-ce que ces heures sont majorées ?",
+    "references": [],
+    "statut": "hors_perimetre",
+    "critere": "Signale que les majorations d’heures travaillées dépassent le périmètre."
+  },
+  {
+    "id": "conges-1",
+    "theme": "conges",
+    "question": "J’ai 25 ans et ça fait huit mois sans interruption que je bosse dans la même boîte. Comment se calculent mes jours de vacances ?",
+    "references": [
+      "code:231"
+    ],
+    "statut": "repondre",
+    "critere": "Reconnaît le congé annuel et donne la règle de calcul de base pour un adulte, sous réserve de dispositions plus favorables."
+  },
+  {
+    "id": "conges-2",
+    "theme": "conges",
+    "question": "Je suis tombé malade pendant mes jours de vacances. Est-ce que ces jours sont déduits du congé annuel payé ?",
+    "references": [
+      "code:235"
+    ],
+    "statut": "repondre",
+    "critere": "Explique le traitement des interruptions dues à la maladie selon l’article."
+  },
+  {
+    "id": "conges-3",
+    "theme": "conges",
+    "question": "Puis-je prendre mes congés annuels en plusieurs fois si mon patron est d’accord ?",
+    "references": [
+      "code:240"
+    ],
+    "statut": "repondre",
+    "critere": "Explique la possibilité du fractionnement par accord et la limite prévue par le texte."
+  },
+  {
+    "id": "conges-4",
+    "theme": "conges",
+    "question": "Ça fait huit mois que je bosse dans la même boîte. J’ai droit à combien de jours de vacances ?",
+    "references": [
+      "code:231"
+    ],
+    "statut": "clarifier",
+    "critere": "Demande notamment l’âge et vérifie que le service est continu avant un calcul personnalisé."
+  },
+  {
+    "id": "conges-5",
+    "theme": "conges",
+    "question": "Combien de jours d’absence sont prévus pour le décès d’un proche ?",
+    "references": [],
+    "statut": "hors_perimetre",
+    "critere": "Distingue le congé pour événement familial du congé annuel payé."
+  },
+  {
+    "id": "preavis-1",
+    "theme": "preavis",
+    "question": "Je quitte mon CDI après huit mois comme employé. Je dois rester combien de temps ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "statut": "repondre",
+    "critere": "Identifie les huit jours du barème de référence et signale les dispositions applicables à vérifier."
+  },
+  {
+    "id": "preavis-2",
+    "theme": "preavis",
+    "question": "Ma lettre de démission a été notifiée lundi. Le décompte de mon préavis démarre quand ?",
+    "references": [
+      "code:44"
+    ],
+    "statut": "repondre",
+    "critere": "Indique que le délai commence le lendemain de la notification."
+  },
+  {
+    "id": "preavis-3",
+    "theme": "preavis",
+    "question": "Pour démissionner de mon CDI, ma lettre doit-elle porter une signature légalisée ?",
+    "references": [
+      "code:34"
+    ],
+    "statut": "repondre",
+    "critere": "Explique la formalité de signature mentionnée dans le Code."
+  },
+  {
+    "id": "preavis-4",
+    "theme": "preavis",
+    "question": "Je suis cadre en CDI et je veux partir. Comment savoir combien de temps je dois encore travailler ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "statut": "clarifier",
+    "critere": "Demande l’ancienneté avant d’identifier une durée de référence."
+  },
+  {
+    "id": "preavis-5",
+    "theme": "preavis",
+    "question": "Mon CDD arrive à son terme et n’est pas reconduit. Comment contester la décision ?",
+    "references": [],
+    "statut": "hors_perimetre",
+    "critere": "Signale que la contestation du non-renouvellement dépasse le périmètre."
+  }
+]
