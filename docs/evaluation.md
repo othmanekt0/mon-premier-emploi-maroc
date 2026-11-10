@@ -30,3 +30,18 @@ Les trois questions hors périmètre n’ont pas de référence attendue et sont
 Le moteur classe à tort plusieurs demandes dans « hors périmètre », notamment une question sur la période probatoire et des questions formulées avec « vacances » ou « quitter mon CDI ». Il demande aussi des précisions inutiles pour le fractionnement des congés et le point de départ du préavis.
 
 Ce jeu sert à comparer les versions. S’il est utilisé pour orienter les corrections, prévoir ensuite un autre jeu de questions inédites pour mesurer la généralisation.
+
+
+## Essai du mode génératif local
+
+Modèle `qwen3:1.7b`, génération à température zéro et cinq candidats BM25. Le même jeu de quinze questions a été rejoué avec `python -m src.evaluer_reponses --ollama qwen3:1.7b`.
+
+| Mesure | Mode par règles | Qwen3 local |
+| --- | --- | --- |
+| Statut correct | 8/15 | 5/15 |
+| Toutes les références attendues dans les cinq premiers résultats BM25 | 9/12 | 9/12 |
+| Toutes les références attendues présentes dans les sources de la réponse | 5/12 | 6/12 |
+
+Le modèle explique correctement le fractionnement des congés dans le cas `conges-3`, que les règles ne traitent pas. Il échoue en revanche sur les trois demandes de clarification. Sur `preavis-4`, il cite le bon décret mais attribue les durées aux mauvaises catégories et mélange préavis et période d’essai. Une citation authentique ne valide donc pas l’interprétation. Trois sorties ont aussi été rejetées car leur preuve ne satisfaisait pas la validation.
+
+Le mode génératif reste expérimental et s’active explicitement. Le mode par règles reste le choix par défaut. L’essai initial avec `qwen3:8b` a dépassé le délai sur cette machine, ce qui a motivé l’essai complet de la variante plus légère.
