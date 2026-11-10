@@ -4,7 +4,7 @@ Assistant de recherche documentaire pour les salariés du secteur privé au Maro
 
 ## État du projet
 
-Le cadrage est disponible dans la [fiche projet](docs/cadrage.md). Le corpus, le moteur de recherche et l’application seront ajoutés au fil des étapes.
+Le cadrage est disponible dans la [fiche projet](docs/cadrage.md). Le corpus, la recherche, l’API et l’interface sont disponibles en local.
 
 ## Organisation
 
@@ -37,3 +37,13 @@ Pour lancer les tests après préparation du corpus :
 python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 ```
+
+## Interface Streamlit
+
+Laisser l’API tourner dans un premier terminal. Depuis la racine du dépôt, dans un deuxième terminal avec le même environnement Python, lancer :
+
+```powershell
+python -m streamlit run ui/app.py
+```
+
+Ouvrir http://localhost:8501. L’interface contacte l’API sur http://127.0.0.1:8000 par défaut. Si l’API tourne ailleurs, définir la variable `API_URL` avant de lancer Streamlit.
