@@ -75,3 +75,7 @@ Après avoir préparé le corpus :
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
+
+## Vérification sur GitHub
+
+À chaque push et pull request, le [workflow Tests](../../actions/workflows/tests.yml) utilise Python 3.11, télécharge le PDF officiel référencé dans le catalogue, génère les passages et exécute les tests. Le bilan de recherche est visible dans le journal du workflow.
