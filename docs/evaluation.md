@@ -45,3 +45,9 @@ Modèle `qwen3:1.7b`, génération à température zéro et cinq candidats BM25.
 Le modèle explique correctement le fractionnement des congés dans le cas `conges-3`, que les règles ne traitent pas. Il échoue en revanche sur les trois demandes de clarification. Sur `preavis-4`, il cite le bon décret mais attribue les durées aux mauvaises catégories et mélange préavis et période d’essai. Une citation authentique ne valide donc pas l’interprétation. Trois sorties ont aussi été rejetées car leur preuve ne satisfaisait pas la validation.
 
 Le mode génératif reste expérimental et s’active explicitement. Le mode par règles reste le choix par défaut. L’essai initial avec `qwen3:8b` a dépassé le délai sur cette machine, ce qui a motivé l’essai complet de la variante plus légère.
+
+## Après la sélection du préavis par le code
+
+Sur le même jeu de quinze questions, le mode par règles passe de **8/15 à 11/15** pour le statut attendu et de **5/12 à 8/12** pour la présence de toutes les références attendues. Le classement BM25 reste à **9/12**. Les trois cas récupérés portent sur la durée du préavis pour un employé, son point de départ après notification et la clarification de l’ancienneté pour un cadre.
+
+Les tests contrôlent les seuils d’un et de cinq ans, l’affichage de la durée, les précisions manquantes et le fait que les questions de préavis reconnues utilisent les règles même en mode génératif. Ce jeu a guidé la correction. Une évaluation indépendante reste à faire.

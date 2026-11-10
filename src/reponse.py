@@ -3,6 +3,7 @@
 import argparse
 import json
 import re
+from decimal import Decimal
 
 from src.recherche import PASSAGES, Recherche, charger, termes
 
@@ -20,6 +21,45 @@ DUREES_ESSAI_CDI = (
     ({"employe", "employes", "employee", "employees"}, "un mois et demi"),
     ({"ouvrier", "ouvriers", "ouvriere", "ouvrieres"}, "quinze jours"),
 )
+
+
+NOMBRES = {
+    mot: valeur for valeur, mot in enumerate(
+        ("zero", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix")
+    )
+}
+ANCIENNETE = re.compile(
+    r"\b(\d+(?:[.,]\d+)?|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix)\s+"
+    r"(mois|ans?|années?)\b"
+)
+REFERENCES_PREAVIS = frozenset({"code:34", "code:43", "code:44", "code:51", "decret:1"})
+
+
+def anciennete_en_mois(question):
+    question = question.casefold()
+    durees = list(ANCIENNETE.finditer(question))
+    if len(durees) != 1 or re.search(
+        r"\b(?:âgé|âgée|âge|et demi(?:e)?|presque|environ|moins de|plus de)\b", question.casefold()
+    ):
+        return None
+    duree = durees[0]
+    avant, apres = question[:duree.start()], question[duree.end():]
+    if not (
+        re.search(r"(?:depuis|après|au bout de)\s*$", avant)
+        or re.match(r"\s+(?:d['’]ancienneté|de (?:travail|service))\b", apres)
+    ):
+        return None
+    valeur, unite = duree.groups()
+    nombre = Decimal(NOMBRES[valeur]) if valeur in NOMBRES else Decimal(valeur.replace(",", "."))
+    return nombre if unite == "mois" else nombre * 12
+
+
+def categorie_preavis(question):
+    mots = set(termes(question))
+    groupes = [categorie for categorie, _ in DUREES_ESSAI_CDI if categorie & mots]
+    if len(groupes) != 1 or re.search(r"\b(?:pas|non)[ -]+(?:un |une )?(?:cadre|assimil|employ|ouvri)", question.casefold()):
+        return None
+    return "Cadres et assimilés" if groupes[0] == DUREES_ESSAI_CDI[0][0] else "Employés et ouvriers"
 
 
 EXPLICATIONS = {
@@ -83,20 +123,28 @@ def orienter(question):
         if mots & {"age", "ans", "majeur", "mineur"} or DUREE.search(q):
             return ("code:231",), None
         return ("code:231",), "Quel âge as-tu et depuis combien de temps travailles-tu sans interruption chez cet employeur ?"
-    if mots & {"preavis", "demission", "demissionne", "demissionner", "quitter", "bareme"}:
+    depart_cdi = "cdi" in mots and bool(mots & {"quitte", "quitter", "partir", "pars"})
+    if depart_cdi or mots & {"preavis", "demission", "demissionne", "demissionner", "quitter", "bareme"}:
         if mots & {"signature", "legaliser", "formalite"}:
             return ("code:34",), None
-        if "notification" in mots and mots & {"partir", "court", "commence"}:
+        if mots & {"notification", "notifie", "notifiee"} and mots & {"partir", "court", "commence", "demarre"}:
             return ("code:44",), None
         if "indemnite" in mots and "preavis" in mots:
             return ("code:51",), None
-        if "cdi" not in mots:
-            if "cdd" in mots:
+        if "cdi" not in mots or "cdd" in mots:
+            if "cdd" in mots and "cdi" not in mots:
                 return (), None
             return ("code:34", "code:43"), "Quel est ton type de contrat et es-tu encore en période d’essai ?"
-        if not CATEGORIE.search(q) or not DUREE.search(q):
-            return ("code:43", "decret:1"), "Quelle est ta catégorie professionnelle et quelle est ton ancienneté ?"
-        return ("code:43", "decret:1"), None
+        references = ("code:43", "decret:1")
+        categorie = categorie_preavis(question)
+        anciennete = anciennete_en_mois(question)
+        if categorie is None and anciennete is None:
+            return references, "Quelle est ta catégorie professionnelle et quelle est ton ancienneté ?"
+        if categorie is None:
+            return references, "Quelle est ta catégorie professionnelle : cadre ou assimilé, employé, ou ouvrier ?"
+        if anciennete is None:
+            return references, "Quelle est ton ancienneté chez cet employeur, en mois ou en années ?"
+        return references, None
     return (), None
 
 
@@ -150,7 +198,28 @@ class Assistant:
             "sources": sources,
         }
         if "decret:1" in references:
-            resultat["bareme"] = self.passages["decret:1"]["bareme"]
+            bareme = self.passages["decret:1"]["bareme"]
+            categorie = categorie_preavis(question)
+            anciennete = anciennete_en_mois(question)
+            ligne = next((ligne for ligne in bareme if ligne["categorie"] == categorie), None)
+            if ligne is None or anciennete is None:
+                return {
+                    "statut": "source_insuffisante",
+                    "message": "Je ne peux pas déterminer une durée à partir du barème chargé.",
+                    "sources": [],
+                }
+            if anciennete < 12:
+                tranche = "moins_un_an"
+            elif anciennete <= 60:
+                tranche = "un_a_cinq_ans"
+            else:
+                tranche = "plus_de_cinq_ans"
+            resultat["message"] = (
+                f"Le délai de préavis de référence est de {ligne[tranche]} selon le décret n° 2-04-469. "
+                "Vérifie les exceptions et les dispositions applicables, notamment celles de ton "
+                "contrat ou de ta convention collective, comme le prévoit l’article 43."
+            )
+            resultat["bareme"] = bareme
         return resultat
 
 

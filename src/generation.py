@@ -7,7 +7,7 @@ from typing import Annotated, Literal
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
-from src.recherche import Recherche
+from src.reponse import Assistant, REFERENCES_PREAVIS, orienter
 
 LOGGER = logging.getLogger(__name__)
 OLLAMA_CHAT = "http://127.0.0.1:11434/api/chat"
@@ -83,9 +83,13 @@ def generer_ollama(modele, question, passages):
 class AssistantGeneratif:
     def __init__(self, passages, modele, *, recherche=None):
         self.modele = modele
-        self.recherche = recherche if recherche is not None else Recherche(passages)
+        self.regles = Assistant(passages)
+        self.recherche = recherche if recherche is not None else self.regles.recherche
 
     def repondre(self, question):
+        references, _ = orienter(question)
+        if REFERENCES_PREAVIS.intersection(references):
+            return self.regles.repondre(question)
         passages = [p for p, _ in self.recherche.chercher(question)]
         try:
             sortie = generer_ollama(self.modele, question, passages)
@@ -112,8 +116,10 @@ class AssistantGeneratif:
         if sortie.statut in {"hors_perimetre", "source_insuffisante"} and sortie.citations:
             raise ValueError("Une abstention ne doit pas attribuer de source")
 
+        if sortie.statut == "repondre" and any(c.id in REFERENCES_PREAVIS for c in sortie.citations):
+            raise ValueError("Une réponse sur le préavis doit passer par les règles")
+
         sources = []
-        bareme = None
         for citation in sortie.citations:
             passage = disponibles[citation.id]
             extrait = " ".join(citation.extrait.split())
@@ -122,10 +128,5 @@ class AssistantGeneratif:
             source = {cle: passage[cle] for cle in CHAMPS_SOURCE}
             source["texte"] = extrait
             sources.append(source)
-            if sortie.statut == "repondre" and "bareme" in passage:
-                bareme = passage["bareme"]
 
-        resultat = {"statut": sortie.statut, "message": sortie.message, "sources": sources}
-        if bareme is not None:
-            resultat["bareme"] = bareme
-        return resultat
+        return {"statut": sortie.statut, "message": sortie.message, "sources": sources}

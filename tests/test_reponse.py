@@ -52,6 +52,34 @@ class TestReponse(unittest.TestCase):
                 self.assertIn("durée plus courte", resultat["message"])
                 self.assertEqual([source["id"] for source in resultat["sources"]], ["code:14"])
 
+    def test_preavis_selectionne_la_bonne_ligne_et_tranche(self):
+        for categorie, duree, attendu in (
+            ("cadre", "11 mois", "1 mois"),
+            ("cadre", "12 mois", "2 mois"),
+            ("cadre", "cinq ans", "2 mois"),
+            ("cadre", "61 mois", "3 mois"),
+            ("employée", "huit mois", "8 jours"),
+            ("ouvrière", "61 mois", "2 mois"),
+        ):
+            with self.subTest(categorie=categorie, duree=duree):
+                resultat = self.assistant.repondre(
+                    f"Je quitte mon CDI après {duree} comme {categorie}. Je dois rester combien de temps ?"
+                )
+                self.assertEqual(resultat["statut"], "repondre")
+                self.assertIn(f"est de {attendu} selon le décret", resultat["message"])
+                self.assertEqual({s["id"] for s in resultat["sources"]}, {"code:43", "decret:1"})
+
+    def test_preavis_demande_uniquement_la_precision_manquante(self):
+        resultat = self.assistant.repondre("Je suis cadre en CDI et je veux partir. J’ai 25 ans.")
+        self.assertEqual(resultat["statut"], "clarifier")
+        self.assertIn("ancienneté", resultat["message"])
+        self.assertNotIn("catégorie", resultat["message"])
+        self.assertNotIn("bareme", resultat)
+        resultat = self.assistant.repondre("Je quitte mon CDI après huit mois. Quel est mon préavis ?")
+        self.assertEqual(resultat["statut"], "clarifier")
+        self.assertIn("catégorie", resultat["message"])
+        self.assertNotIn("ancienneté", resultat["message"])
+
     def test_bareme_identifie_comme_structure(self):
         resultat = self.assistant.repondre(
             "Quel barème de préavis s’applique à un cadre en CDI avec deux ans d’ancienneté ?"

@@ -34,3 +34,7 @@ Le modèle choisi doit apparaître dans `ollama list`. Au besoin, le télécharg
 L’API envoie au modèle local les cinq passages classés par BM25. Elle valide le format JSON et exige que chaque extrait cité existe dans le passage indiqué. Les identifiants et les liens affichés proviennent du corpus. Ce contrôle garantit la provenance de l’extrait. La pertinence de l’explication et l’applicabilité du texte restent à vérifier séparément. Le mode génératif s’abstient si une réponse présente une citation invérifiable ou si Ollama est inaccessible.
 
 Pour comparer les réponses, lancer `python -m src.evaluer_reponses --ollama qwen3:1.7b`. Les tests automatisés simulent le modèle pour reproduire les contrôles sans télécharger ses poids en CI.
+
+## Sélection du barème par le code
+
+Pour une question de préavis de démission en CDI, l’application identifie la catégorie professionnelle et l’ancienneté avant de sélectionner la durée de référence dans le barème. Elle pose une question ciblée quand une information manque ou que la durée est ambiguë. Elle cite le décret et l’article 43 et rappelle les dispositions à vérifier. Les questions de préavis reconnues suivent ce parcours même quand le mode Ollama est activé.

@@ -4,6 +4,7 @@ from unittest.mock import patch
 import httpx
 
 from src.generation import AssistantGeneratif, Citation, SortieModele
+from src.recherche import PASSAGES, charger
 
 
 PASSAGE = {
@@ -42,6 +43,17 @@ class TestGeneration(unittest.TestCase):
                         resultat = self.assistant.repondre("Quelle est la durée de l’essai ?")
                 self.assertEqual(resultat["statut"], "source_insuffisante")
                 self.assertEqual(resultat["sources"], [])
+
+    def test_preavis_utilise_les_regles_meme_en_mode_generatif(self):
+        assistant = AssistantGeneratif(charger(PASSAGES), "modele-test")
+        with patch("src.generation.generer_ollama") as generer:
+            incomplet = assistant.repondre("Je suis cadre en CDI et je veux partir.")
+            complet = assistant.repondre("Je quitte mon CDI après huit mois comme employé.")
+        generer.assert_not_called()
+        self.assertEqual(incomplet["statut"], "clarifier")
+        self.assertIn("ancienneté", incomplet["message"])
+        self.assertEqual(complet["statut"], "repondre")
+        self.assertIn("8 jours", complet["message"])
 
     def test_modele_injoignable(self):
         with patch("src.generation.generer_ollama", side_effect=httpx.ConnectError("indisponible")):
