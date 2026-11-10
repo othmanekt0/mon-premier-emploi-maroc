@@ -20,7 +20,7 @@
   {
     "id": "essai-03",
     "theme": "essai",
-    "question": "Quelle durée maximale le texte prévoit-il pour un CDD de quatre mois ?",
+    "question": "Quelle durée maximale d’essai le texte prévoit-il pour un CDD de quatre mois ?",
     "references": [
       "code:14"
     ],
@@ -29,7 +29,7 @@
   {
     "id": "essai-04",
     "theme": "essai",
-    "question": "Quelle durée maximale le texte prévoit-il pour un CDD de huit mois ?",
+    "question": "Quelle durée maximale d’essai le texte prévoit-il pour un CDD de huit mois ?",
     "references": [
       "code:14"
     ],
