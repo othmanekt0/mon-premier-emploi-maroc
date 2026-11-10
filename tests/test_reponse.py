@@ -37,6 +37,21 @@ class TestReponse(unittest.TestCase):
         self.assertEqual(resultat["statut"], "source_insuffisante")
         self.assertFalse(resultat["sources"])
 
+    def test_duree_essai_cdi_explicite(self):
+        for categorie, duree in (
+            ("cadre", "trois mois"),
+            ("employée", "un mois et demi"),
+            ("ouvrière", "quinze jours"),
+        ):
+            with self.subTest(categorie=categorie):
+                resultat = self.assistant.repondre(
+                    f"Quelle est la durée d’essai pour un salarié {categorie} en CDI ?"
+                )
+                self.assertEqual(resultat["statut"], "repondre")
+                self.assertIn(duree, resultat["message"])
+                self.assertIn("durée plus courte", resultat["message"])
+                self.assertEqual([source["id"] for source in resultat["sources"]], ["code:14"])
+
     def test_bareme_identifie_comme_structure(self):
         resultat = self.assistant.repondre(
             "Quel barème de préavis s’applique à un cadre en CDI avec deux ans d’ancienneté ?"

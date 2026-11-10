@@ -15,6 +15,13 @@ CATEGORIE = re.compile(r"\b(?:cadres?|assimiles?|employes?|ouvriers?)\b")
 DUREE = re.compile(r"\b(?:\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) "
                    r"(?:an|ans|annees?|mois|semaines?|jours?)\b")
 
+DUREES_ESSAI_CDI = (
+    ({"cadre", "cadres", "assimile", "assimiles"}, "trois mois"),
+    ({"employe", "employes", "employee", "employees"}, "un mois et demi"),
+    ({"ouvrier", "ouvriers", "ouvriere", "ouvrieres"}, "quinze jours"),
+)
+
+
 EXPLICATIONS = {
     "code:13": "Le Code distingue le principe de rupture pendant l’essai et les cas "
                "où un délai s’applique. La durée travaillée, la fréquence de paie et le motif comptent.",
@@ -93,6 +100,21 @@ def orienter(question):
     return (), None
 
 
+def expliquer(reference, question):
+    if reference == "code:14":
+        mots = set(termes(question))
+        if "cdi" in mots and "cdd" not in mots:
+            durees = [duree for categorie, duree in DUREES_ESSAI_CDI if categorie & mots]
+            if len(durees) == 1:
+                return (
+                    f"Selon l’article 14, la durée initiale de la période d’essai en CDI "
+                    f"est de {durees[0]} pour cette catégorie. "
+                    "Elle peut être renouvelée une fois. Le contrat de travail, la convention "
+                    "collective ou le règlement intérieur peuvent prévoir une durée plus courte."
+                )
+    return EXPLICATIONS[reference]
+
+
 class Assistant:
     def __init__(self, passages):
         self.passages = {p["id"]: p for p in passages}
@@ -124,7 +146,7 @@ class Assistant:
             return {"statut": "clarifier", "message": precision, "sources": sources}
         resultat = {
             "statut": "repondre",
-            "message": "\n\n".join(EXPLICATIONS[ref] for ref in references),
+            "message": "\n\n".join(expliquer(ref, question) for ref in references),
             "sources": sources,
         }
         if "decret:1" in references:
