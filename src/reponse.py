@@ -9,7 +9,7 @@ from src.recherche import PASSAGES, Recherche, charger, termes
 
 
 HORS_PERIMETRE = re.compile(
-    r"\b(?:licenciement|maternite|maladie professionnelle|heures supplementaires|"
+    r"\b(?:licenciement|maternite|paternite|maladie professionnelle|heures supplementaires|"
     r"non renouvellement|fonction publique)\b"
 )
 CATEGORIE = re.compile(r"\b(?:cadres?|assimiles?|employes?|ouvriers?)\b")
@@ -32,7 +32,10 @@ ANCIENNETE = re.compile(
     r"\b(\d+(?:[.,]\d+)?|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix)\s+"
     r"(mois|ans?|années?)\b"
 )
-REFERENCES_PREAVIS = frozenset({"code:34", "code:43", "code:44", "code:51", "decret:1"})
+REFERENCES_ENCADREES = frozenset({
+    "code:13", "code:14", "code:34", "code:43", "code:44", "code:51",
+    "code:231", "code:232", "code:238", "code:240", "decret:1",
+})
 
 
 def anciennete_en_mois(question):
@@ -77,16 +80,18 @@ EXPLICATIONS = {
                "préavis de CDI n’est pas respecté intégralement, sous les conditions qu’il précise.",
     "code:231": "Le calcul de base dépend de l’âge et des mois de service. L’article "
                 "prévoit six mois de service continu pour le droit au congé et réserve les règles plus favorables.",
-    "code:232": "L’article prévoit une majoration par période entière de cinq ans de "
-                "service, dans la limite de la durée totale qu’il fixe.",
+    "code:232": "L’article 232 prévoit 1,5 jour de travail effectif supplémentaire par "
+                "période entière de cinq ans de service. La durée totale est plafonnée à "
+                "30 jours de travail effectif.",
     "code:235": "Les interruptions de travail dues à la maladie ne sont pas décomptées "
                 "du congé annuel payé selon cet article.",
     "code:236": "L’article exclut notamment les jours de repos hebdomadaire du décompte "
                 "des jours de travail effectif.",
     "code:238": "Le Code fixe une équivalence en jours ou en heures. L’équivalence "
                 "en heures diffère selon le caractère agricole de l’activité.",
-    "code:240": "Le fractionnement ou le cumul est possible par accord, dans les limites "
-                "indiquées par l’article.",
+    "code:240": "L’article 240 permet le fractionnement ou le cumul sur deux années "
+                "consécutives par accord. Le fractionnement doit préserver une période "
+                "d’au moins 12 jours ouvrables, dont deux jours de repos hebdomadaire.",
     "code:243": "Le Code distingue la durée du congé annuel payé du délai de préavis.",
     "decret:1": "Repère la ligne du barème correspondant à la catégorie professionnelle et à l’ancienneté.",
 }
@@ -102,17 +107,19 @@ def orienter(question):
             if not DUREE.search(q) or not mots & {"paye", "payee", "paie", "remunere"}:
                 return ("code:13",), "Depuis combien de temps travailles-tu et à quelle fréquence es-tu payé ?"
             return ("code:13",), None
+        if {"cdi", "cdd"} <= mots:
+            return ("code:14",), "Ton contrat est-il un CDI ou un CDD ?"
         if not mots & {"cdd", "cdi", "courte", "courtes"}:
             return ("code:14",), "Es-tu en CDI ou en CDD ? Précise ta catégorie en CDI ou la durée du CDD."
         return ("code:14",), None
-    if mots & {"conge", "conges"}:
+    if mots & {"conge", "conges", "vacances"}:
         if "preavis" in mots:
             return ("code:243",), None
         if mots & {"malade", "maladie", "ferie", "feries"}:
             return ("code:235",), None
         if "repos" in mots:
             return ("code:236",), None
-        if mots & {"fractionner", "fractionnement", "cumuler", "cumul"}:
+        if mots & {"fractionner", "fractionnement", "cumuler", "cumul"} or "plusieurs fois" in q:
             return ("code:240",), None
         if "heures" in mots:
             if not mots & {"agricole", "agricoles"}:
@@ -120,8 +127,11 @@ def orienter(question):
             return ("code:238",), None
         if "majoration" in mots:
             return ("code:232",), None
-        if mots & {"age", "ans", "majeur", "mineur"} or DUREE.search(q):
+        age = age_conges(question)
+        if age is not None:
             return ("code:231",), None
+        if anciennete_en_mois(question) is not None:
+            return ("code:231",), "Quel âge as-tu ? La durée de service chez cet employeur a-t-elle été continue ?"
         return ("code:231",), "Quel âge as-tu et depuis combien de temps travailles-tu sans interruption chez cet employeur ?"
     depart_cdi = "cdi" in mots and bool(mots & {"quitte", "quitter", "partir", "pars"})
     if depart_cdi or mots & {"preavis", "demission", "demissionne", "demissionner", "quitter", "bareme"}:
@@ -148,9 +158,63 @@ def orienter(question):
     return (), None
 
 
+def age_conges(question):
+    mots = set(termes(question))
+    majeur = bool(mots & {"majeur", "majeure", "adulte"})
+    mineur = bool(mots & {"mineur", "mineure"})
+    ages = re.findall(
+        r"\b(?:j['’]ai|âgé(?:e)? de|(?:salarié|salariée) de)\s+(\d{1,3})\s+ans\b",
+        question.casefold(),
+    )
+    if majeur and not mineur:
+        return "majeur"
+    if mineur and not majeur:
+        return "mineur"
+    if len(set(ages)) == 1 and not (majeur or mineur):
+        return "mineur" if int(ages[0]) < 18 else "majeur"
+    return None
+
+
+def expliquer_conges(question):
+    age = age_conges(question)
+    if age is None:
+        return EXPLICATIONS["code:231"]
+    taux = "2 jours" if age == "mineur" else "1,5 jour"
+    return (
+        f"L’article 231 prévoit {taux} de travail effectif par mois de service pour "
+        "cette tranche d’âge. Le droit au congé annuel s’ouvre après six mois de service "
+        "continu chez le même employeur ou dans la même entreprise, sous réserve de "
+        "dispositions plus favorables."
+    )
+
+
+def expliquer_essai_cdd(question):
+    duree = re.search(r"\bcdd de (\d+|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix) mois\b", question.casefold())
+    if not duree:
+        return EXPLICATIONS["code:14"]
+    valeur = duree[1]
+    mois = NOMBRES[valeur] if valeur in NOMBRES else int(valeur)
+    if mois <= 0:
+        return EXPLICATIONS["code:14"]
+    if mois < 6:
+        regle = "un jour par semaine de travail, dans la limite de deux semaines"
+    elif mois > 6:
+        regle = "un mois"
+    else:
+        return (
+            "L’article 14 distingue les CDD de moins de six mois et ceux de plus de six mois. "
+            "Le passage ne fixe pas explicitement le plafond pour un CDD de six mois exactement."
+        )
+    return f"Selon l’article 14, le plafond correspond à {regle}. Une durée plus courte peut être prévue."
+
+
 def expliquer(reference, question):
+    if reference == "code:231":
+        return expliquer_conges(question)
     if reference == "code:14":
         mots = set(termes(question))
+        if "cdd" in mots and "cdi" not in mots:
+            return expliquer_essai_cdd(question)
         if "cdi" in mots and "cdd" not in mots:
             durees = [duree for categorie, duree in DUREES_ESSAI_CDI if categorie & mots]
             if len(durees) == 1:

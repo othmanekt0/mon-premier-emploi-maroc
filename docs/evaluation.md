@@ -51,3 +51,13 @@ Le mode génératif reste expérimental et s’active explicitement. Le mode par
 Sur le même jeu de quinze questions, le mode par règles passe de **8/15 à 11/15** pour le statut attendu et de **5/12 à 8/12** pour la présence de toutes les références attendues. Le classement BM25 reste à **9/12**. Les trois cas récupérés portent sur la durée du préavis pour un employé, son point de départ après notification et la clarification de l’ancienneté pour un cadre.
 
 Les tests contrôlent les seuils d’un et de cinq ans, l’affichage de la durée, les précisions manquantes et le fait que les questions de préavis reconnues utilisent les règles même en mode génératif. Ce jeu a guidé la correction. Une évaluation indépendante reste à faire.
+
+## Validation sur un jeu séparé
+
+```powershell
+python -m src.evaluer_reponses --jeu tests/cas_validation.json
+```
+
+Le [jeu de validation](../tests/cas_validation.json) contient quinze questions inédites, cinq par thème. Au premier passage, le mode par règles obtient 14/15 pour le statut et 12/12 pour la présence de toutes les références attendues. BM25 seul retrouve toutes les références dans le top 5 sur 9/12 questions. Le cas manqué concernait le congé de paternité, qui déclenchait une clarification sur les congés annuels. Après correction de ce cas, le score sur ce même jeu atteint 15/15 pour le statut. Ce dernier résultat est une vérification de régression.
+
+Les règles donnent le taux de congé de base selon l’âge et rappellent la condition de service continu. Elles ne calculent pas un solde individuel. Pour un CDD de six mois exactement, la réponse signale que le passage indexé de l’article 14 ne traite pas explicitement ce seuil. Les questions chiffrées reconnues sur l’essai et les congés passent également par les règles lorsque le mode génératif est activé.

@@ -8,10 +8,10 @@ from src.recherche import PASSAGES, charger
 
 
 PASSAGE = {
-    "id": "code:14", "article": "14", "titre": "Période d’essai",
-    "url": "https://example.org/code.pdf#page=17", "nature": "article_extrait",
-    "texte": "Premier paragraphe. La durée initiale de cette période est indiquée ici.",
-    "resume": "Durée de la période d’essai.", "page_pdf": 17,
+    "id": "code:235", "article": "235", "titre": "Maladie pendant les congés",
+    "url": "https://example.org/code.pdf#page=89", "nature": "article_extrait",
+    "texte": "Premier paragraphe. Le décompte des jours est décrit dans ce paragraphe.",
+    "resume": "Décompte du congé annuel pendant la maladie.", "page_pdf": 17,
 }
 
 
@@ -20,12 +20,12 @@ class TestGeneration(unittest.TestCase):
         self.assistant = AssistantGeneratif([PASSAGE], "modele-test")
 
     def test_citation_exacte(self):
-        extrait = "La durée initiale de cette période est indiquée ici."
+        extrait = "Le décompte des jours est décrit dans ce paragraphe."
         sortie = SortieModele(statut="repondre", message="Voici la règle.", citations=[
-            Citation(id="code:14", extrait=extrait),
+            Citation(id="code:235", extrait=extrait),
         ])
         with patch("src.generation.generer_ollama", return_value=sortie):
-            resultat = self.assistant.repondre("Quelle est la durée de l’essai ?")
+            resultat = self.assistant.repondre("Comment décompter la maladie pendant les congés annuels ?")
         self.assertEqual(resultat["statut"], "repondre")
         self.assertEqual(resultat["sources"][0]["texte"], extrait)
         self.assertEqual(resultat["sources"][0]["url"], PASSAGE["url"])
@@ -34,13 +34,13 @@ class TestGeneration(unittest.TestCase):
         for citations in (
             [],
             [Citation(id="code:999", extrait=PASSAGE["texte"])],
-            [Citation(id="code:14", extrait="Un extrait inventé qui ne figure pas dans le document.")],
+            [Citation(id="code:235", extrait="Un extrait inventé qui ne figure pas dans le document.")],
         ):
             with self.subTest(citations=citations):
                 sortie = SortieModele(statut="repondre", message="À rejeter.", citations=citations)
                 with patch("src.generation.generer_ollama", return_value=sortie):
                     with self.assertLogs("src.generation", level="WARNING"):
-                        resultat = self.assistant.repondre("Quelle est la durée de l’essai ?")
+                        resultat = self.assistant.repondre("Comment décompter la maladie pendant les congés annuels ?")
                 self.assertEqual(resultat["statut"], "source_insuffisante")
                 self.assertEqual(resultat["sources"], [])
 
@@ -58,6 +58,6 @@ class TestGeneration(unittest.TestCase):
     def test_modele_injoignable(self):
         with patch("src.generation.generer_ollama", side_effect=httpx.ConnectError("indisponible")):
             with self.assertLogs("src.generation", level="WARNING"):
-                resultat = self.assistant.repondre("Quelle est la durée de l’essai ?")
+                resultat = self.assistant.repondre("Comment décompter la maladie pendant les congés annuels ?")
         self.assertEqual(resultat["statut"], "source_insuffisante")
         self.assertIn("indisponible", resultat["message"])

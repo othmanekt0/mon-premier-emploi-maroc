@@ -1,0 +1,149 @@
+[
+  {
+    "id": "validation-essai-1",
+    "theme": "essai",
+    "question": "J’ai signé un CDI comme ouvrière. Quelle durée initiale prévoit le Code pour l’essai ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "repondre",
+    "critere": "Indique quinze jours et les dispositions éventuellement plus courtes."
+  },
+  {
+    "id": "validation-essai-2",
+    "theme": "essai",
+    "question": "Mon CDD de neuf mois comporte une période d’essai. Quel est le plafond prévu ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "repondre",
+    "critere": "Indique un mois comme plafond prévu par le passage."
+  },
+  {
+    "id": "validation-essai-3",
+    "theme": "essai",
+    "question": "Mon CDD de six mois pile prévoit une période d’essai. Quel plafond puis-je déduire du passage ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "repondre",
+    "critere": "Signale que le passage ne tranche pas explicitement le seuil exact."
+  },
+  {
+    "id": "validation-essai-4",
+    "theme": "essai",
+    "question": "J’ai commencé un nouvel emploi. Est-ce que les deux mois d’essai dans mon contrat sont cohérents ?",
+    "references": [
+      "code:14"
+    ],
+    "statut": "clarifier",
+    "critere": "Demande le type de contrat puis les informations qui en dépendent."
+  },
+  {
+    "id": "validation-essai-5",
+    "theme": "essai",
+    "question": "Comment calculer mes primes de panier ?",
+    "references": [],
+    "statut": "hors_perimetre",
+    "critere": "Écarte une question de rémunération hors périmètre."
+  },
+  {
+    "id": "validation-conges-1",
+    "theme": "conges",
+    "question": "J’ai 17 ans et sept mois de service continu. Quelle règle de base fixe mes congés annuels ?",
+    "references": [
+      "code:231"
+    ],
+    "statut": "repondre",
+    "critere": "Indique deux jours de travail effectif par mois et le seuil d’ouverture."
+  },
+  {
+    "id": "validation-conges-2",
+    "theme": "conges",
+    "question": "Je suis majeure et je travaille depuis neuf mois chez le même employeur. Quelle est la règle de base pour le congé annuel ?",
+    "references": [
+      "code:231"
+    ],
+    "statut": "repondre",
+    "critere": "Indique 1,5 jour de travail effectif par mois et rappelle la continuité et les conditions plus favorables."
+  },
+  {
+    "id": "validation-conges-3",
+    "theme": "conges",
+    "question": "Je tombe malade au milieu de mes vacances annuelles. Comment le Code traite-t-il ces jours ?",
+    "references": [
+      "code:235"
+    ],
+    "statut": "repondre",
+    "critere": "Explique le traitement des interruptions pour maladie."
+  },
+  {
+    "id": "validation-conges-4",
+    "theme": "conges",
+    "question": "Ça fait neuf mois que je travaille ici. À combien de jours de vacances ai-je droit ?",
+    "references": [
+      "code:231"
+    ],
+    "statut": "clarifier",
+    "critere": "Demande l’âge et vérifie la continuité du service."
+  },
+  {
+    "id": "validation-conges-5",
+    "theme": "conges",
+    "question": "Quelle est la durée du congé de paternité ?",
+    "references": [],
+    "statut": "hors_perimetre",
+    "critere": "Écarte le congé pour événement familial."
+  },
+  {
+    "id": "validation-preavis-1",
+    "theme": "preavis",
+    "question": "Je démissionne en étant cadre en CDI avec 60 mois d’ancienneté. Quel est le délai de référence ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "statut": "repondre",
+    "critere": "Indique deux mois au seuil exact de cinq ans et rappelle les dispositions à vérifier."
+  },
+  {
+    "id": "validation-preavis-2",
+    "theme": "preavis",
+    "question": "Je suis ouvrier en CDI depuis 13 mois et je démissionne. Quel est le préavis de référence ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "statut": "repondre",
+    "critere": "Indique un mois selon la bonne ligne du barème."
+  },
+  {
+    "id": "validation-preavis-3",
+    "theme": "preavis",
+    "question": "Mon préavis et mes congés annuels sont-ils décomptés ensemble ?",
+    "references": [
+      "code:243"
+    ],
+    "statut": "repondre",
+    "critere": "Distingue les deux durées selon l’article 243."
+  },
+  {
+    "id": "validation-preavis-4",
+    "theme": "preavis",
+    "question": "Je pars de mon CDI après 18 mois de travail. Quel délai dois-je prévoir ?",
+    "references": [
+      "code:43",
+      "decret:1"
+    ],
+    "statut": "clarifier",
+    "critere": "Demande la catégorie professionnelle."
+  },
+  {
+    "id": "validation-preavis-5",
+    "theme": "preavis",
+    "question": "Quels recours après une sanction disciplinaire ?",
+    "references": [],
+    "statut": "hors_perimetre",
+    "critere": "Écarte un sujet hors périmètre."
+  }
+]

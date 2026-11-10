@@ -80,6 +80,33 @@ class TestReponse(unittest.TestCase):
         self.assertIn("catégorie", resultat["message"])
         self.assertNotIn("ancienneté", resultat["message"])
 
+    def test_conges_indique_le_taux_sans_inventer_un_solde(self):
+        for age, taux in ((17, "2 jours"), (18, "1,5 jour")):
+            with self.subTest(age=age):
+                resultat = self.assistant.repondre(
+                    f"J’ai {age} ans. Comment sont calculés mes congés annuels ?"
+                )
+                self.assertIn(f"{taux} de travail effectif par mois", resultat["message"])
+                self.assertIn("six mois de service continu", resultat["message"])
+
+    def test_essai_cdd_traite_les_deux_branches_et_le_seuil(self):
+        for duree, attendu in (
+            (4, "un jour par semaine"),
+            (6, "ne fixe pas explicitement"),
+            (9, "un mois"),
+        ):
+            with self.subTest(duree=duree):
+                resultat = self.assistant.repondre(
+                    f"Quel plafond de période d’essai pour un CDD de {duree} mois ?"
+                )
+                self.assertIn(attendu, resultat["message"])
+                self.assertEqual([s["id"] for s in resultat["sources"]], ["code:14"])
+
+    def test_conge_special_hors_perimetre(self):
+        resultat = self.assistant.repondre("Combien de jours de congé de paternité ?")
+        self.assertEqual(resultat["statut"], "hors_perimetre")
+        self.assertFalse(resultat["sources"])
+
     def test_bareme_identifie_comme_structure(self):
         resultat = self.assistant.repondre(
             "Quel barème de préavis s’applique à un cadre en CDI avec deux ans d’ancienneté ?"

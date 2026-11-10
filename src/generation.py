@@ -7,7 +7,7 @@ from typing import Annotated, Literal
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
-from src.reponse import Assistant, REFERENCES_PREAVIS, orienter
+from src.reponse import Assistant, REFERENCES_ENCADREES, orienter
 
 LOGGER = logging.getLogger(__name__)
 OLLAMA_CHAT = "http://127.0.0.1:11434/api/chat"
@@ -88,7 +88,7 @@ class AssistantGeneratif:
 
     def repondre(self, question):
         references, _ = orienter(question)
-        if REFERENCES_PREAVIS.intersection(references):
+        if REFERENCES_ENCADREES.intersection(references):
             return self.regles.repondre(question)
         passages = [p for p, _ in self.recherche.chercher(question)]
         try:
@@ -116,8 +116,8 @@ class AssistantGeneratif:
         if sortie.statut in {"hors_perimetre", "source_insuffisante"} and sortie.citations:
             raise ValueError("Une abstention ne doit pas attribuer de source")
 
-        if sortie.statut == "repondre" and any(c.id in REFERENCES_PREAVIS for c in sortie.citations):
-            raise ValueError("Une réponse sur le préavis doit passer par les règles")
+        if sortie.statut == "repondre" and any(c.id in REFERENCES_ENCADREES for c in sortie.citations):
+            raise ValueError("Cette référence doit passer par les règles")
 
         sources = []
         for citation in sortie.citations:

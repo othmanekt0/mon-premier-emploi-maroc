@@ -39,6 +39,7 @@ def evaluer(assistant, cas):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--passages", type=Path, default=PASSAGES)
+    parser.add_argument("--jeu", type=Path, default=CAS)
     parser.add_argument("--ollama", metavar="MODELE")
     args = parser.parse_args()
     if not args.passages.is_file():
@@ -50,7 +51,7 @@ def main():
         assistant = AssistantGeneratif(passages, args.ollama)
     else:
         assistant = Assistant(passages)
-    evaluer(assistant, charger(CAS))
+    evaluer(assistant, charger(args.jeu))
 
 
 if __name__ == "__main__":
